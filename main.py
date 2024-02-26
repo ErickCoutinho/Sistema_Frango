@@ -6,12 +6,23 @@ import pandas as pd
 from datetime import datetime
 import webbrowser
 
+
 class SistemaFrango:
-    def __init__(self, root, imagem_fundo):
+    def __init__(self, root):
         self.root = root
         self.root.title("Sistema de Comércio de Frango")
+
+        # Obtendo a resolução da tela
+        largura_tela = root.winfo_screenwidth()
+        altura_tela = root.winfo_screenheight()
+
+        # Abrindo e redimensionando a imagem de fundo
+        imagem_fundo = Image.open("logo3.jpeg")
+        imagem_fundo = imagem_fundo.resize((largura_tela, altura_tela), Image.LANCZOS)
         self.background_image = ImageTk.PhotoImage(imagem_fundo)
-        self.background = tk.Canvas(root, width=1366, height=768)
+
+        # Configurando o canvas de fundo
+        self.background = tk.Canvas(root, width=largura_tela, height=altura_tela)
         self.background.create_image(0, 0, anchor=tk.NW, image=self.background_image)
         self.background.grid(row=0, column=0, columnspan=10, rowspan=6)
         self.background.configure(bg="goldenrod")
@@ -47,7 +58,7 @@ class SistemaFrango:
 
         # Criar um estilo para o botão com a fonte desejada
         estilo = ttk.Style()
-        estilo.configure('EstiloBotao.TButton', font=('Helvetica', 14), background='yellow',
+        estilo.configure('EstiloBotao.TButton', font=('Helvetica', 14), background='black',
                          state='normal',
                          justify='center',
                          borderwidth='3', relief="raised")
@@ -126,7 +137,8 @@ class SistemaFrango:
             botao.grid(row=i, column=0, sticky='w', padx=10, pady=5)
 
         # Configuração do redimensionamento responsivo
-        botoes_frame.grid_rowconfigure((0, len(botoes)), weight=1)
+        botoes_frame.grid_rowconfigure(0, weight=1)
+        botoes_frame.grid_rowconfigure(len(botoes), weight=1)
         botoes_frame.grid_columnconfigure(0, weight=1)
 
     def abrir_powerbi(self):
@@ -767,10 +779,6 @@ class SistemaFrango:
         self.root.destroy()
 
 if __name__ == "__main__":
-    imagem_fundo = Image.open("logo3.jpeg")
-    imagem_fundo = imagem_fundo.resize((1366, 768), Image.LANCZOS)
     root = tk.Tk()
-    app = SistemaFrango(root, imagem_fundo)
+    app = SistemaFrango(root)
     root.mainloop()
-
-
